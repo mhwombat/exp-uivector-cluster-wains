@@ -60,6 +60,8 @@ import ALife.Creatur.Wain.Weights (makeWeights)
 import Control.Conditional (whenM)
 import Control.Lens hiding (universe)
 import Control.Monad (when, unless)
+import Control.Monad.Catch (catchAll)
+import Control.Exception (SomeException)
 import Control.Monad.IO.Class (liftIO)
 import Control.Monad.Random (Rand, RandomGen, getRandomR, getRandomRs,
   getRandom, evalRandIO, fromList)
@@ -290,7 +292,7 @@ run (me:w1:w2:xs) = do
                        _weanlings = [],
                        _universe = u,
                        _summary = initSummary p}
-  e' <- liftIO $ execStateT run' e
+  e' <- liftIO $ execStateT runWrapped e
   let modifiedAgents = O.addIfWain (view directObject e')
         . O.addIfWain (view indirectObject e')
             $ view subject e' : view weanlings e'
@@ -299,6 +301,19 @@ run (me:w1:w2:xs) = do
   reportAnyDeaths modifiedAgents
   return modifiedAgents
 run _ = error "too few wains"
+
+runWrapped :: StateT Experiment IO ()
+runWrapped = catchAll run' reportException
+
+reportException :: SomeException -> StateT Experiment IO ()
+reportException e = do
+  report $ "WARNING: Unhandled exception: " ++ show e
+  a <- use subject
+  report $ "subject=" ++ show a
+  b <- use directObject
+  report $ "direct object=" ++ show b
+  c <- use indirectObject
+  report $ "indirect object=" ++ show c
 
 run' :: StateT Experiment IO ()
 run' = do
