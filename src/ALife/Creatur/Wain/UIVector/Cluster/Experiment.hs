@@ -56,6 +56,7 @@ import ALife.Creatur.Persistent (putPS, getPS)
 import ALife.Creatur.Wain.PersistentStatistics (updateStats, readStats,
   clearStats)
 import ALife.Creatur.Wain.Statistics (summarise)
+import ALife.Creatur.Util (stateMap)
 import ALife.Creatur.Wain.Weights (makeWeights)
 import Control.Conditional (whenM)
 import Control.Lens hiding (universe)
@@ -66,9 +67,11 @@ import Control.Monad.IO.Class (liftIO)
 import Control.Monad.Random (Rand, RandomGen, getRandomR, getRandomRs,
   getRandom, evalRandIO, fromList)
 import Control.Monad.State.Lazy (StateT, execStateT, evalStateT, get)
+import qualified Data.ByteString as BS
 import Data.List (intercalate, minimumBy)
 import Data.Ord (comparing)
 import Data.Version (showVersion)
+import qualified Data.Serialize as DS 
 import Data.Word (Word64)
 import Paths_exp_uivector_cluster_wains (version)
 import System.Directory (createDirectoryIfMissing)
@@ -308,12 +311,15 @@ runWrapped = catchAll run' reportException
 reportException :: SomeException -> StateT Experiment IO ()
 reportException e = do
   report $ "WARNING: Unhandled exception: " ++ show e
+  t <- stateMap undefined _universe U.currentTime
   a <- use subject
-  report $ "subject=" ++ show a
+  let f = show t ++ "_" ++ agentId a
+  report $ "Saving debug info as " ++ f
+  liftIO $ BS.writeFile (f ++ ".subject") (DS.encode a)
   b <- use directObject
-  report $ "direct object=" ++ show b
+  liftIO $ BS.writeFile (f ++ ".dObj") (DS.encode b)
   c <- use indirectObject
-  report $ "indirect object=" ++ show c
+  liftIO $ BS.writeFile (f ++ ".iObj") (DS.encode c)
 
 run' :: StateT Experiment IO ()
 run' = do
