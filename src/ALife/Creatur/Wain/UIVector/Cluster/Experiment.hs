@@ -308,10 +308,17 @@ run _ = error "too few wains"
 runWrapped :: StateT Experiment IO ()
 runWrapped = catchAll run' reportException
 
+withUniverse
+  :: Monad m
+    => StateT (U.Universe PatternWain) m a -> StateT Experiment m a
+withUniverse program = do
+  e <- get
+  stateMap (\u -> e { _universe=u }) _universe program
+
 reportException :: SomeException -> StateT Experiment IO ()
 reportException e = do
   report $ "WARNING: Unhandled exception: " ++ show e
-  t <- stateMap undefined _universe U.currentTime
+  t <- withUniverse U.currentTime
   a <- use subject
   let f = show t ++ "_" ++ agentId a
   report $ "Saving debug info as " ++ f
