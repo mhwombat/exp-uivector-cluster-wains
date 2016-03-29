@@ -320,7 +320,8 @@ reportException e = do
   report $ "WARNING: Unhandled exception: " ++ show e
   t <- withUniverse U.currentTime
   a <- use subject
-  let f = show t ++ "_" ++ agentId a
+  d <- use (universe . U.uDebugDir)
+  let f = d ++ "/" ++ show t ++ "_" ++ agentId a
   report $ "Saving debug info as " ++ f
   liftIO $ BS.writeFile (f ++ ".subject") (DS.encode a)
   b <- use directObject
