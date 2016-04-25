@@ -116,7 +116,7 @@ randomPatternWain wName u classifierSize = do
   let mr = makeMuser dOut dp
   t <- getRandom
   ios <- take 4 <$> getRandomRs (view U.uImprintOutcomeRange u)
-  rds <- take 4 <$> getRandomRs (view U.uImprintOutcomeRange u)
+  rds <- take 4 <$> getRandomRs (view U.uReinforcementDeltasRange u)
   let (Right wBrain) = makeBrain c mr dr hw t ios rds
   wDevotion <- getRandomR . view U.uDevotionRange $ u
   wAgeOfMaturity <- getRandomR . view U.uMaturityRange $ u
