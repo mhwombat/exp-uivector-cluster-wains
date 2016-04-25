@@ -53,6 +53,7 @@ import ALife.Creatur.Wain.UIVector.Cluster.Action (Action(..), numActions)
 import qualified ALife.Creatur.Wain.UIVector.Wain as PW
 import qualified ALife.Creatur.Wain.UIVector.Cluster.Universe as U
 import ALife.Creatur.Persistent (putPS, getPS)
+import qualified ALife.Creatur.Wain.UIVector.Wain as UW
 import ALife.Creatur.Wain.PersistentStatistics (updateStats, readStats,
   clearStats)
 import ALife.Creatur.Wain.Statistics (summarise)
@@ -81,7 +82,8 @@ import Text.Printf (printf)
 versionInfo :: String
 versionInfo
   = "exp-uivector-cluster-wains-" ++ showVersion version
-      ++ ", compiled with " ++ W.packageVersion
+      ++ ", compiled with " ++ UW.packageVersion
+      ++ ", " ++ W.packageVersion
       ++ ", " ++ ALife.Creatur.programVersion
 
 type PatternWain = PW.PatternWain Action
