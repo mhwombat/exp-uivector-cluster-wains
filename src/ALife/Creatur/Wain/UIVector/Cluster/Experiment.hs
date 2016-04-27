@@ -648,12 +648,12 @@ applyDisagreementEffects aAction bAction = do
       then do
         report $ view W.name b ++ " learns from " ++ view W.name a
           ++ " that " ++ O.objectId dObj ++ " is " ++ show aAction
-        let (_, _, b') = W.imprint [p1, pa] aAction b
+        let (_, _, _, _, b') = W.imprint [p1, pa] aAction b
         assign indirectObjectWain b'
       else do
         report $ view W.name a ++ " learns from " ++ view W.name b
           ++ " that " ++ O.objectId dObj ++ " is " ++ show bAction
-        let (_, _, a') = W.imprint [p1, pb] bAction a
+        let (_, _, _, _, a') = W.imprint [p1, pb] bAction a
         assign subject a'
 
 flirt :: StateT Experiment IO ()
