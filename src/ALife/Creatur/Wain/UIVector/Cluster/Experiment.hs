@@ -30,6 +30,7 @@ module ALife.Creatur.Wain.UIVector.Cluster.Experiment
 
 import ALife.Creatur (agentId, isAlive, programVersion)
 import ALife.Creatur.Task (checkPopSize)
+import ALife.Creatur.Persistent (putPS, getPS)
 import qualified ALife.Creatur.Wain as W
 import ALife.Creatur.Wain.Brain (Brain, classifier, predictor,
   decisionQuality, makeBrain, scenarioReport, responseReport,
@@ -52,7 +53,6 @@ import qualified ALife.Creatur.Wain.Statistics as Stats
 import ALife.Creatur.Wain.UIVector.Cluster.Action (Action(..), numActions)
 import qualified ALife.Creatur.Wain.UIVector.Wain as PW
 import qualified ALife.Creatur.Wain.UIVector.Cluster.Universe as U
-import ALife.Creatur.Persistent (putPS, getPS)
 import qualified ALife.Creatur.Wain.UIVector.Wain as UW
 import ALife.Creatur.Wain.PersistentStatistics (updateStats, readStats,
   clearStats)
