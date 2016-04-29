@@ -39,7 +39,7 @@ module ALife.Creatur.Wain.UIVector.Cluster.Universe
     uVectorLength,
     uPatternDB,
     uClassifierSizeRange,
-    uPredictorSizeRange,
+    -- uPredictorSizeRange,
     uDevotionRange,
     uMaturityRange,
     uMaxAge,
@@ -124,7 +124,7 @@ data Universe a = Universe
     _uVectorLength :: Int,
     _uPatternDB :: PatternDB,
     _uClassifierSizeRange :: (Word64, Word64),
-    _uPredictorSizeRange :: (Word64, Word64),
+    -- _uPredictorSizeRange :: (Word64, Word64),
     _uDevotionRange :: (UIDouble, UIDouble),
     _uMaturityRange :: (Word16, Word16),
     _uMaxAge :: Int,
@@ -217,9 +217,9 @@ cClassifierSizeRange :: Setting (Word64, Word64)
 cClassifierSizeRange
   = requiredSetting "classifierSizeRange"
 
-cPredictorSizeRange :: Setting (Word64, Word64)
-cPredictorSizeRange
-  = requiredSetting "predictorSizeRange"
+-- cPredictorSizeRange :: Setting (Word64, Word64)
+-- cPredictorSizeRange
+--   = requiredSetting "predictorSizeRange"
 
 cDevotionRange :: Setting (UIDouble, UIDouble)
 cDevotionRange = requiredSetting "devotionRange"
@@ -356,7 +356,7 @@ config2Universe getSetting =
       _uVectorLength = getSetting cVectorLength,
       _uPatternDB = mkPatternDB (getSetting cDataFile),
       _uClassifierSizeRange = getSetting cClassifierSizeRange,
-      _uPredictorSizeRange = getSetting cPredictorSizeRange,
+      -- _uPredictorSizeRange = getSetting cPredictorSizeRange,
       _uDevotionRange = getSetting cDevotionRange,
       _uMaturityRange = getSetting cMaturityRange,
       _uMaxAge = getSetting cMaxAge,
@@ -381,7 +381,6 @@ config2Universe getSetting =
       _uNoveltyBasedAgreementDeltaE
         = getSetting cNoveltyBasedAgreementDeltaE,
       _uMinAgreementDeltaE = getSetting cMinAgreementDeltaE,
-      -- _uOutcomeRange = getSetting cOutcomeRange,
       _uClassifierThresholdRange = getSetting cClassifierThresholdRange,
       _uClassifierR0Range = getSetting cClassifierR0Range,
       _uClassifierRfRange = getSetting cClassifierRfRange,
