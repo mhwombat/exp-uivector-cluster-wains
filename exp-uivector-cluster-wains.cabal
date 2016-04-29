@@ -1,5 +1,5 @@
 name:                exp-uivector-cluster-wains
-version:             1.0.6
+version:             1.0.7
 synopsis:            Agent for clustering numeric vectors.
 description:         ALife agent that works co-operatively with other
                      agents to develop a classification scheme for
