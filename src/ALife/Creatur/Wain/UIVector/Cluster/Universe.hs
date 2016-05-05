@@ -156,7 +156,7 @@ data Universe a = Universe
     _uPredictorRfRange :: (UIDouble, UIDouble),
     _uPredictorTfRange :: (Word64, Word64),
     _uDefaultOutcomeRange :: (PM1Double, PM1Double),
-    _uStrictnessRange :: (Word8, Word8),
+    _uStrictnessRange :: (Word64, Word64),
     _uImprintOutcomeRange :: (PM1Double, PM1Double),
     _uReinforcementDeltasRange :: (PM1Double, PM1Double),
     _uDepthRange :: (Word8, Word8),
@@ -309,7 +309,7 @@ cPredictorTfRange = requiredSetting "predictorTfRange"
 cDefaultOutcomeRange :: Setting (PM1Double, PM1Double)
 cDefaultOutcomeRange = requiredSetting "defaultOutcomeRange"
 
-cStrictnessRange :: Setting (Word8, Word8)
+cStrictnessRange :: Setting (Word64, Word64)
 cStrictnessRange = requiredSetting "strictnessRange"
 
 cImprintOutcomeRange :: Setting (PM1Double, PM1Double)
