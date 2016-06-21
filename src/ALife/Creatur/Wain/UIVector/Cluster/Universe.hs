@@ -61,6 +61,7 @@ module ALife.Creatur.Wain.UIVector.Cluster.Universe
     uNoveltyBasedAgreementDeltaE,
     uMinAgreementDeltaE,
     uAdultAdultTeaching,
+    uConfidenceFactor,
     uClassifierThresholdRange,
     uClassifierR0Range,
     uClassifierRfRange,
@@ -144,6 +145,7 @@ data Universe a = Universe
     _uCooperationDeltaE :: Double,
     _uPopControlDeltaE :: Persistent Double,
     _uAdultAdultTeaching :: Bool,
+    _uConfidenceFactor :: Double,
     _uDQBasedAgreementDeltaE :: Double,
     _uNoveltyBasedAgreementDeltaE :: Double,
     _uMinAgreementDeltaE :: Double,
@@ -272,6 +274,9 @@ cCooperationDeltaE = requiredSetting "cooperationDeltaE"
 cAdultAdultTeaching :: Setting Bool
 cAdultAdultTeaching = requiredSetting "adultAdultTeaching"
 
+cConfidenceFactor :: Setting Double
+cConfidenceFactor = requiredSetting "confidenceFactor"
+
 cDQBasedAgreementDeltaE :: Setting Double
 cDQBasedAgreementDeltaE = requiredSetting "dqBasedAgreementDeltaE"
 
@@ -382,6 +387,7 @@ config2Universe getSetting =
       _uPopControlDeltaE
         = mkPersistent 0 (workDir ++ "/popControlDeltaE"),
       _uAdultAdultTeaching = getSetting cAdultAdultTeaching,
+      _uConfidenceFactor = getSetting cConfidenceFactor,
       _uDQBasedAgreementDeltaE = getSetting cDQBasedAgreementDeltaE,
       _uNoveltyBasedAgreementDeltaE
         = getSetting cNoveltyBasedAgreementDeltaE,

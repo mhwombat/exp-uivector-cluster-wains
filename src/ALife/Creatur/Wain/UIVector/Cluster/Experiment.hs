@@ -644,18 +644,24 @@ applyDisagreementEffects aAction bAction = do
     agentId a ++ "'s confidence is " ++ printf "%.3f" aConfidence
   report $
     agentId b ++ "'s confidence is " ++ printf "%.3f" bConfidence
-  whenM (use $ universe . U.uAdultAdultTeaching) $
-    if aConfidence > bConfidence
+  whenM (use $ universe . U.uAdultAdultTeaching) $ do
+    k <- use $ universe . U.uConfidenceFactor
+    if aConfidence > k*bConfidence
       then do
         report $ view W.name b ++ " learns from " ++ view W.name a
           ++ " that " ++ O.objectId dObj ++ " is " ++ show aAction
         let (_, _, _, _, b') = W.imprint [p1, pa] aAction b
         assign indirectObjectWain b'
-      else do
-        report $ view W.name a ++ " learns from " ++ view W.name b
-          ++ " that " ++ O.objectId dObj ++ " is " ++ show bAction
-        let (_, _, _, _, a') = W.imprint [p1, pb] bAction a
-        assign subject a'
+      else
+        if bConfidence > k*aConfidence
+          then do
+            report $ view W.name a ++ " learns from " ++ view W.name b
+              ++ " that " ++ O.objectId dObj ++ " is " ++ show bAction
+            let (_, _, _, _, a') = W.imprint [p1, pb] bAction a
+            assign subject a'
+          else
+            report $ view W.name a ++ " and " ++ view W.name b
+              ++ " shrug their shoulders and get on with life"
 
 flirt :: StateT Experiment IO ()
 flirt = do

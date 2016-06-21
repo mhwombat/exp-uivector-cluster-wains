@@ -28,7 +28,7 @@ import System.Random (Random, random, randomR)
 data Action = Cooperate_a | Cooperate_b | Cooperate_c | Cooperate_d
                 | Cooperate_e | Cooperate_f | Cooperate_g | Cooperate_h
                 | Flirt | Ignore
-  deriving (Show, Eq, Ord, Enum, Bounded, Generic)
+  deriving (Show, Read, Eq, Ord, Enum, Bounded, Generic)
 instance Serialize Action
 instance Genetic Action
 instance Diploid Action
