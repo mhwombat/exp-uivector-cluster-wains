@@ -1,7 +1,7 @@
 ------------------------------------------------------------------------
 -- |
 -- Module      :  ALife.Creatur.Wain.UIVector.Cluster.Universe
--- Copyright   :  (c) Amy de Buitléir 2012-2015
+-- Copyright   :  (c) Amy de Buitléir 2012-2016
 -- License     :  BSD-style
 -- Maintainer  :  amy@nualeargais.ie
 -- Stability   :  experimental
@@ -60,8 +60,7 @@ module ALife.Creatur.Wain.UIVector.Cluster.Universe
     uDQBasedAgreementDeltaE,
     uNoveltyBasedAgreementDeltaE,
     uMinAgreementDeltaE,
-    uAdultAdultTeaching,
-    uConfidenceFactor,
+    uOracle,
     uClassifierThresholdRange,
     uClassifierR0Range,
     uClassifierRfRange,
@@ -144,11 +143,10 @@ data Universe a = Universe
     _uDQDeltaE :: Double,
     _uCooperationDeltaE :: Double,
     _uPopControlDeltaE :: Persistent Double,
-    _uAdultAdultTeaching :: Bool,
-    _uConfidenceFactor :: Double,
     _uDQBasedAgreementDeltaE :: Double,
     _uNoveltyBasedAgreementDeltaE :: Double,
     _uMinAgreementDeltaE :: Double,
+    _uOracle :: Persistent (Maybe AgentId),
     _uClassifierThresholdRange :: (UIDouble, UIDouble),
     _uClassifierR0Range :: (UIDouble, UIDouble),
     _uClassifierRfRange :: (UIDouble, UIDouble),
@@ -271,12 +269,6 @@ cDQDeltaE = requiredSetting "dqDeltaE"
 cCooperationDeltaE :: Setting Double
 cCooperationDeltaE = requiredSetting "cooperationDeltaE"
 
-cAdultAdultTeaching :: Setting Bool
-cAdultAdultTeaching = requiredSetting "adultAdultTeaching"
-
-cConfidenceFactor :: Setting Double
-cConfidenceFactor = requiredSetting "confidenceFactor"
-
 cDQBasedAgreementDeltaE :: Setting Double
 cDQBasedAgreementDeltaE = requiredSetting "dqBasedAgreementDeltaE"
 
@@ -386,12 +378,11 @@ config2Universe getSetting =
       _uCooperationDeltaE = getSetting cCooperationDeltaE,
       _uPopControlDeltaE
         = mkPersistent 0 (workDir ++ "/popControlDeltaE"),
-      _uAdultAdultTeaching = getSetting cAdultAdultTeaching,
-      _uConfidenceFactor = getSetting cConfidenceFactor,
       _uDQBasedAgreementDeltaE = getSetting cDQBasedAgreementDeltaE,
       _uNoveltyBasedAgreementDeltaE
         = getSetting cNoveltyBasedAgreementDeltaE,
       _uMinAgreementDeltaE = getSetting cMinAgreementDeltaE,
+      _uOracle = mkPersistent Nothing (workDir ++ "/oracle"),
       _uClassifierThresholdRange = getSetting cClassifierThresholdRange,
       _uClassifierR0Range = getSetting cClassifierR0Range,
       _uClassifierRfRange = getSetting cClassifierRfRange,

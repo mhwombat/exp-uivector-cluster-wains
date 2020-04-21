@@ -1,7 +1,7 @@
 ------------------------------------------------------------------------
 -- |
 -- Module      :  ALife.Creatur.Wain.UIVector.Cluster.Experiment
--- Copyright   :  (c) Amy de Buitléir 2012-2015
+-- Copyright   :  (c) Amy de Buitléir 2012-2016
 -- License     :  BSD-style
 -- Maintainer  :  amy@nualeargais.ie
 -- Stability   :  experimental
@@ -644,24 +644,17 @@ applyDisagreementEffects aAction bAction = do
     agentId a ++ "'s confidence is " ++ printf "%.3f" aConfidence
   report $
     agentId b ++ "'s confidence is " ++ printf "%.3f" bConfidence
-  whenM (use $ universe . U.uAdultAdultTeaching) $ do
-    k <- use $ universe . U.uConfidenceFactor
-    if aConfidence > k*bConfidence
-      then do
-        report $ view W.name b ++ " learns from " ++ view W.name a
-          ++ " that " ++ O.objectId dObj ++ " is " ++ show aAction
-        let (_, _, _, _, b') = W.imprint [p1, pa] aAction b
-        assign indirectObjectWain b'
-      else
-        if bConfidence > k*aConfidence
-          then do
-            report $ view W.name a ++ " learns from " ++ view W.name b
-              ++ " that " ++ O.objectId dObj ++ " is " ++ show bAction
-            let (_, _, _, _, a') = W.imprint [p1, pb] bAction a
-            assign subject a'
-          else
-            report $ view W.name a ++ " and " ++ view W.name b
-              ++ " shrug their shoulders and get on with life"
+  oracle <- use (universe . U.uOracle)
+  when (agentId a == oracle) $ do
+    report $ oracle ++ " teaches " ++ view W.name b
+      ++ " that " ++ O.objectId dObj ++ " is " ++ show aAction
+    let (_, _, _, _, b') = W.imprint [p1, pa] aAction b
+    assign indirectObjectWain b'
+  when (agentId b == oracle) $ do
+    report $ oracle ++ " teaches " ++ view W.name a
+      ++ " that " ++ O.objectId dObj ++ " is " ++ show bAction
+    let (_, _, _, _, a') = W.imprint [p1, pb] bAction a
+    assign subject a'
 
 flirt :: StateT Experiment IO ()
 flirt = do
@@ -757,6 +750,10 @@ totalEnergy = do
   e <- O.objectChildEnergy <$> use directObject
   f <- O.objectChildEnergy <$> use indirectObject
   return (a + b + c, d + e + f)
+
+chooseOracle :: StateT (U.Universe PatternWain) IO ()
+chooseOracle = do
+   xxxxxxxxxxx
 
 printStats :: [[Stats.Statistic]] -> StateT (U.Universe PatternWain) IO ()
 printStats = mapM_ f
